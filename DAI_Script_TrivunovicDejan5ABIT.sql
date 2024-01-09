@@ -6,6 +6,7 @@ drop table if exists ERP_Daten CASCADE;
 drop table if exists Betriebsdaten CASCADE;
 drop table if exists AnlagenAnalyse CASCADE;
 drop table if exists Analysen CASCADE;
+drop sequence if exists serialnumber_seq cascade;
 
 --erstelle die Tabellen
 CREATE TABLE Anlage
@@ -34,6 +35,13 @@ CREATE TABLE Maschine
  Modellytpe VARCHAR(256) not null,
  Baujahr timestamp 
  );
+
+--erstelle die Sequenz für die Befüllung der Seriennummern der Maschinen
+CREATE SEQUENCE serialnumber_seq
+INCREMENT 1
+START 1437493932;
+
+
 
 CREATE TABLE Betriebsdaten
 (
@@ -80,15 +88,15 @@ insert into ERP_Daten(Produktpreis,ServiceEinsätze,Fehlerhistorie,Auslaufmodell
 insert into ERP_Daten(Produktpreis,ServiceEinsätze,Fehlerhistorie,Auslaufmodell,Prototype) values(23000,1,'Fehlerbehebung : Softwarefehler durch Update behoben', false,false);
 insert into ERP_Daten(Produktpreis,ServiceEinsätze,Fehlerhistorie,Auslaufmodell,Prototype) values(10000,0,'keine Einsätze vorhanden', false,false);
 
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx1','Anlage X',1437493935,'1000er', '2010-03-22'); 
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx2','Anlage X',1437493932,'2000er', '2012-07-05'); 
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx3','Anlage Z',1435535935,'1000er', '2010-05-29'); 
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eRFx4','Anlage Z',1030340340,'x700', '2018-08-20');
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eSFx5','Anlage M',1481940430,'500er', '2008-02-18');
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eSFx6','Anlage S',1834782928,'500er', '2006-01-09');
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eMFx7','Anlage S',1903038598,'s6000', '2020-09-13');
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx8','Anlage Y',1703038591,'2000er', '2013-05-19');
-insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx9','Anlage Y',1208583998,'1000er', '2010-11-10');
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx1','Anlage X',nextval('serialnumber_seq'),'1000er', '2010-03-22'); 
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx2','Anlage X',nextval('serialnumber_seq'),'2000er', '2012-07-05'); 
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx3','Anlage Z',nextval('serialnumber_seq'),'1000er', '2010-05-29'); 
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eRFx4','Anlage Z',nextval('serialnumber_seq'),'x700', '2018-08-20');
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eSFx5','Anlage M',nextval('serialnumber_seq'),'500er', '2008-02-18');
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eSFx6','Anlage S',nextval('serialnumber_seq'),'500er', '2006-01-09');
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eMFx7','Anlage S',nextval('serialnumber_seq'),'s6000', '2020-09-13');
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx8','Anlage Y',nextval('serialnumber_seq'),'2000er', '2013-05-19');
+insert into Maschine(PK_Bezeichnung,FK_Anlagenname,Seriennummer,Modellytpe,Baujahr) values('eTFx9','Anlage Y',nextval('serialnumber_seq'),'1000er', '2010-11-10');
 
 insert into Betriebsdaten values('eTFx1','2010-06-10',12.9,36,899, 129,82,99); 
 insert into Betriebsdaten values('eTFx2','2012-08-15',10,30.7,910, 118,76,91); 
@@ -114,7 +122,7 @@ insert into AnlagenAnalyse(PKFK_Anlagenname) values('Anlage Y');
 
 --select * from Anlage;
 --select * from ERP_Daten;
---select * from Maschine;
+select * from Maschine;
 --select * from betriebsdaten;
 --select * from Analysen;
 --select * from AnlagenAnalyse natural join Analysen;
