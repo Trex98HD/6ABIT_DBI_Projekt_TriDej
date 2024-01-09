@@ -107,7 +107,7 @@ insert into Betriebsdaten values('eSFx5','2009-02-18',13.9,29,830, 78,94,76);
 insert into Betriebsdaten values('eSFx6','2007-10-19',6,22,715, 88,68,80);
 insert into Betriebsdaten values('eMFx7','2022-04-26',17,33,970, 98,103,96);
 insert into Betriebsdaten values('eTFx8','2016-02-23',19,17.8,609, 56,98,83);
-insert into Betriebsdaten values('eTFx9','2010-11-10',18.3,28,750, 88,79,64);
+insert into Betriebsdaten values('eTFx9','2011-11-10',18.3,28,750, 88,79,64);
 
 insert into Analysen(Zeitraum,Verfügbarkeit,performance) values('2019-05-15',85, 0.76); 
 insert into Analysen(Zeitraum,Verfügbarkeit,performance) values('2022-04-30',93,0.92); 
@@ -180,6 +180,7 @@ SELECT Zeitstempel from Betriebsdaten EXCEPT distinct SELECT Baujahr FROM maschi
 CREATE VIEW PreisLeistung AS
 SELECT *  FROM ERP_Daten join analysen ON analysen.Verfügbarkeit >= 90 and erp_daten.serviceeinsätze <= 1;
 
-select produktpreis, performance, serviceeinsätze, fehlerhistorie from PreisLeistung;
+select * from preisleistung
+select produktpreis, verfügbarkeit, serviceeinsätze, fehlerhistorie from PreisLeistung;
 
 
