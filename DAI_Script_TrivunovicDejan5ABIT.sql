@@ -26,6 +26,7 @@ CREATE TABLE ERP_Daten
  Prototype bool
  );
 
+
 CREATE TABLE Maschine
 (PK_Bezeichnung VARCHAR(256) primary key not null,
  FK_Anlagenname VARCHAR(256) references Anlage not null,
@@ -159,7 +160,9 @@ where PKFK_AnalyseID in (select PF_AnalyseID from analysen
 where performance between 0.9 and 0.95))) order by ServiceEinsätze desc;
 
 -- Kreuzprodukt "Cross Join" aus der Tabelle Anlage, Maschine und Betriebsdaten bilden
-SELECT * FROM Anlage, Maschine CROSS JOIN Betriebsdaten;
+--SELECT * FROM Anlage, Maschine CROSS JOIN Betriebsdaten;
+
+SELECT modellytpe, baujahr, ort, ländercode FROM Maschine m CROSS JOIN Anlage a where m.fk_anlagenname  = a.pk_anlagenname ;
 
 -- Theta Join, alle Anlagen Analysen die eine Verfügbarkeit größer/gleich 90% haben in Tabelle Anlage Joinen
 SELECT * FROM Analysen JOIN Anlage ON Analysen.Verfügbarkeit >= 90;
