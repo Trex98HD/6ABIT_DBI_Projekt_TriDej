@@ -17,7 +17,9 @@ CREATE TABLE Anlage
 CREATE TABLE ERP_Daten
 (PK_ERPDataID serial primary key,
  Produktpreis real,
+ CHECK(Produktpreis >= 0),
  ServiceEinsätze smallint,
+ CHECK(ServiceEinsätze >= 0),
  Fehlerhistorie text,
  Auslaufmodell bool,
  Prototype bool
@@ -28,6 +30,7 @@ CREATE TABLE Maschine
  FK_Anlagenname VARCHAR(256) references Anlage not null,
  FK_ERPDataID serial references ERP_Daten, 
  Seriennummer int unique,
+ CHECK(Seriennummer > 0),
  Modellytpe VARCHAR(256) not null,
  Baujahr timestamp 
  );
@@ -48,6 +51,7 @@ CREATE TABLE Analysen
 (PF_AnalyseID serial primary key,
  Zeitraum timestamp,
  Verfügbarkeit real,
+ CHECK(Verfügbarkeit >= 0),
  Performance real
  );
 
@@ -161,11 +165,10 @@ SELECT Seriennummer FROM maschine union SELECT ServiceEinsätze FROM erp_daten;
 -- Mengendifferenz zwischen Betriebsdaten und Analysen
 SELECT Zeitstempel, Parameter1, Parameter2 from Betriebsdaten EXCEPT distinct SELECT Zeitraum, Verfügbarkeit, Performance FROM Analysen; 
 
---View erstellen mit allen Maschinen mit einer Verfügbarkeit >= 90% und weniger als 2 Serviceeinsätzen
+--View erstellen mit allen Maschinen ERP Daten mit einer Verfügbarkeit >= 90% und weniger als 2 Serviceeinsätzen
 CREATE VIEW PreisLeistung AS
-SELECT * FROM ERP_Daten cross join analysen 
-where analysen.Verfügbarkeit >= 90 and erp_daten.serviceeinsätze <= 1;
+SELECT *  FROM ERP_Daten join analysen ON analysen.Verfügbarkeit >= 90 and erp_daten.serviceeinsätze <= 1;
 
-select * from PreisLeistung;
+select produktpreis, performance, serviceeinsätze, fehlerhistorie from PreisLeistung;
 
 
