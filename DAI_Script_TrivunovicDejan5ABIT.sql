@@ -106,7 +106,7 @@ insert into Betriebsdaten values('eSFx5','2009-02-18',13.9,29,830, 78,94,76);
 insert into Betriebsdaten values('eSFx6','2007-10-19',6,22,715, 88,68,80);
 insert into Betriebsdaten values('eMFx7','2022-04-26',17,33,970, 98,103,96);
 insert into Betriebsdaten values('eTFx8','2016-02-23',19,17.8,609, 56,98,83);
-insert into Betriebsdaten values('eTFx9','2017-03-28',18.3,28,750, 88,79,64);
+insert into Betriebsdaten values('eTFx9','2010-11-10',18.3,28,750, 88,79,64);
 
 insert into Analysen(Zeitraum,Verfügbarkeit,performance) values('2019-05-15',85, 0.76); 
 insert into Analysen(Zeitraum,Verfügbarkeit,performance) values('2022-04-30',93,0.92); 
@@ -122,7 +122,7 @@ insert into AnlagenAnalyse(PKFK_Anlagenname) values('Anlage Y');
 
 --select * from Anlage;
 --select * from ERP_Daten;
-select * from Maschine;
+--select * from Maschine;
 --select * from betriebsdaten;
 --select * from Analysen;
 --select * from AnlagenAnalyse natural join Analysen;
@@ -164,14 +164,14 @@ SELECT * FROM Anlage, Maschine CROSS JOIN Betriebsdaten;
 -- Theta Join, alle Anlagen Analysen die eine Verfügbarkeit größer/gleich 90% haben in Tabelle Anlage Joinen
 SELECT * FROM Analysen JOIN Anlage ON Analysen.Verfügbarkeit >= 90;
 
--- Natural Join, alle Anlagen Analysen die eine Verfügbarkeit größer/gleich 90% haben in Tabelle Anlage Joinen
+-- Natural Join
 SELECT * FROM maschine NATURAL JOIN betriebsdaten;
 
 -- Mengenvereinigung "Union" Anzahl der Serviceeinsätze mit Seriennummer vereinigen
 SELECT Seriennummer FROM maschine union SELECT ServiceEinsätze FROM erp_daten;
 
--- Mengendifferenz zwischen Betriebsdaten und Analysen
-SELECT Zeitstempel, Parameter1, Parameter2 from Betriebsdaten EXCEPT distinct SELECT Zeitraum, Verfügbarkeit, Performance FROM Analysen; 
+-- Mengendifferenz zwischen Betriebsdaten und Maschinen
+SELECT Zeitstempel from Betriebsdaten EXCEPT distinct SELECT Baujahr FROM maschine; 
 
 --View erstellen mit allen Maschinen ERP Daten mit einer Verfügbarkeit >= 90% und weniger als 2 Serviceeinsätzen
 CREATE VIEW PreisLeistung AS
